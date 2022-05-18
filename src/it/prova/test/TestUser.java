@@ -33,11 +33,14 @@ public class TestUser {
 //			System.out.println("In tabella ci sono " + userService.listAll().size() + " elementi.");
 
 //			// E TUTTI I TEST VANNO FATTI COSI'
-			//TEST METODO cercaTuttiQuelliCheUsernameIniziaCon()######################
+			// TEST METODO cercaTuttiQuelliCheUsernameIniziaCon()######################
 //			testCercaTuttiQuelliCheUsernameIniziaCon(userService);
-			
+
 //			//TEST METODO CercaTuttiQuelliCreatiPrimaDi()#############################
 //			testCercaTuttiQuelliCreatiPrimaDi(userService);
+
+			// TEST METODO cercaPerCognomeENomeCheInziaCon()###########################
+			testCercaPerCognomeENomeCheInziaCon(userService);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -147,6 +150,25 @@ public class TestUser {
 		}
 
 		System.out.println(".......testCercaTuttiQuelliCreatiPrimaDi PASSED.............");
+	}
+
+	private static void testCercaPerCognomeENomeCheInziaCon(UserService userService) throws Exception {
+		System.out.println(".......testCercaPerCognomeENomeCheInziaCon inizio.............");
+
+		String cognomeInput = "Rossi";
+		String inizialeNomeInput = "Ma";
+
+		List<User> result = userService.cercaPerCognomeENomeCheInziaCon(cognomeInput, inizialeNomeInput);
+
+		if (result.size() == 0) {
+			throw new RuntimeException("testCercaTuttiQuelliCreatiPrimaDi FAILED ");
+		}
+
+		for (User userItem : result) {
+			System.out.println(userItem.getNome() + " " + userItem.getCognome());
+		}
+
+		System.out.println(".......testCercaPerCognomeENomeCheInziaCon PASSED.............");
 	}
 
 }

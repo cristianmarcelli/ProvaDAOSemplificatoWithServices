@@ -282,7 +282,39 @@ public class UserDAOImpl extends AbstractMySQLDAO implements UserDAO {
 	@Override
 	public List<User> findBySurnameAndNameStartsWith(String cognomeInput, String inzialeNomeInput) throws Exception {
 
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		if (cognomeInput == null || inzialeNomeInput == null)
+			throw new Exception("Valore di input non ammesso.");
+
+		ArrayList<User> result = new ArrayList<User>();
+		User userTemp = null;
+
+		try (PreparedStatement ps = connection
+				.prepareStatement("select * from user where cognome = ? and nome like ? ;")) {
+
+			ps.setString(1, cognomeInput);
+			ps.setString(2, inzialeNomeInput + '%');
+
+			try (ResultSet rs = ps.executeQuery();) {
+				while (rs.next()) {
+					userTemp = new User();
+					userTemp.setNome(rs.getString("NOME"));
+					userTemp.setCognome(rs.getString("COGNOME"));
+					userTemp.setLogin(rs.getString("LOGIN"));
+					userTemp.setPassword(rs.getString("PASSWORD"));
+					userTemp.setDateCreated(rs.getDate("DATECREATED"));
+					userTemp.setId(rs.getLong("ID"));
+					result.add(userTemp);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
