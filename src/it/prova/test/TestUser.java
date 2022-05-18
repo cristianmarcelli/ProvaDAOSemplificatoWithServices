@@ -1,5 +1,6 @@
 package it.prova.test;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +32,12 @@ public class TestUser {
 //			testUpdateUser(userService);
 //			System.out.println("In tabella ci sono " + userService.listAll().size() + " elementi.");
 
-			// E TUTTI I TEST VANNO FATTI COSI'
-			testCercaTuttiQuelliCheUsernameIniziaCon(userService);
+//			// E TUTTI I TEST VANNO FATTI COSI'
+			//TEST METODO cercaTuttiQuelliCheUsernameIniziaCon()######################
+//			testCercaTuttiQuelliCheUsernameIniziaCon(userService);
+			
+//			//TEST METODO CercaTuttiQuelliCreatiPrimaDi()#############################
+//			testCercaTuttiQuelliCreatiPrimaDi(userService);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -125,6 +130,23 @@ public class TestUser {
 		}
 
 		System.out.println(".......cercaTuttiQuelliCheUsernameIniziaCon PASSED.............");
+	}
+
+	private static void testCercaTuttiQuelliCreatiPrimaDi(UserService userService) throws Exception {
+		System.out.println(".......testCercaTuttiQuelliCreatiPrimaDi inizio.............");
+
+		Date dataInput = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2021");
+		List<User> result = userService.cercaTuttiQuelliCreatiPrimaDi(dataInput);
+
+		if (result.size() == 0) {
+			throw new RuntimeException("testCercaTuttiQuelliCreatiPrimaDi FAILED ");
+		}
+
+		for (User userItem : result) {
+			System.out.println(userItem.getNome() + " " + userItem.getCognome());
+		}
+
+		System.out.println(".......testCercaTuttiQuelliCreatiPrimaDi PASSED.............");
 	}
 
 }
