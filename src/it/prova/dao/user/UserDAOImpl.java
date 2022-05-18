@@ -285,7 +285,7 @@ public class UserDAOImpl extends AbstractMySQLDAO implements UserDAO {
 		if (isNotActive())
 			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
 
-		if (cognomeInput == null || inzialeNomeInput == null)
+		if (cognomeInput == null || inzialeNomeInput == null || cognomeInput.isEmpty() || inzialeNomeInput.isEmpty())
 			throw new Exception("Valore di input non ammesso.");
 
 		ArrayList<User> result = new ArrayList<User>();
@@ -319,8 +319,37 @@ public class UserDAOImpl extends AbstractMySQLDAO implements UserDAO {
 
 	@Override
 	public User logInto(String loginInput, String passwordInput) throws Exception {
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
 
-		return null;
+		if (loginInput == null || passwordInput == null || loginInput.isEmpty() || passwordInput.isEmpty())
+			throw new Exception("Valore di input non ammesso.");
+
+		User result = null;
+
+		try (PreparedStatement ps = connection
+				.prepareStatement("select * from user where login = ? and password = ? ;")) {
+
+			ps.setString(1, loginInput);
+			ps.setString(2, passwordInput);
+
+			try (ResultSet rs = ps.executeQuery();) {
+				while (rs.next()) {
+					result = new User();
+					result.setNome(rs.getString("NOME"));
+					result.setCognome(rs.getString("COGNOME"));
+					result.setLogin(rs.getString("LOGIN"));
+					result.setPassword(rs.getString("PASSWORD"));
+					result.setDateCreated(rs.getDate("DATECREATED"));
+					result.setId(rs.getLong("ID"));
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 }

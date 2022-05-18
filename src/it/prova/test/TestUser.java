@@ -39,8 +39,11 @@ public class TestUser {
 //			//TEST METODO CercaTuttiQuelliCreatiPrimaDi()#############################
 //			testCercaTuttiQuelliCreatiPrimaDi(userService);
 
-			// TEST METODO cercaPerCognomeENomeCheInziaCon()###########################
-			testCercaPerCognomeENomeCheInziaCon(userService);
+//			// TEST METODO cercaPerCognomeENomeCheInziaCon()###########################
+//			testCercaPerCognomeENomeCheInziaCon(userService);
+
+			// TEST METODO accedi()####################################################
+			testAccedi(userService);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,6 +170,20 @@ public class TestUser {
 		for (User userItem : result) {
 			System.out.println(userItem.getNome() + " " + userItem.getCognome());
 		}
+
+		System.out.println(".......testCercaPerCognomeENomeCheInziaCon PASSED.............");
+	}
+
+	private static void testAccedi(UserService userService) throws Exception {
+		System.out.println(".......testAccedi inizio.............");
+
+		User result = null;
+		String loginInput = "m.rossi@example.com";
+		String passwordInput = "password@01";
+
+		result = userService.accedi(loginInput, passwordInput);
+
+		System.out.println(result);
 
 		System.out.println(".......testCercaPerCognomeENomeCheInziaCon PASSED.............");
 	}
